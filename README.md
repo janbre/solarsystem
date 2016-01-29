@@ -24,3 +24,5 @@ Add options to change model based on accuracy in
   - orbit shape(?)
   - relative size of planets (including sun?)
   - distance between planets
+
+Orbits to scale are also just way to big... can barely see orbit of Mercury
