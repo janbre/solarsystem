@@ -10,11 +10,12 @@ function Planet(name, img, orbitRadius, angle, yearLength, scale) {
   this.img = new Image();
   this.img.src = img;
   this.orbitRadius = orbitRadius;
-  this.radius = this.img.width/4;
+  this.radius = this.img.width/2;
   this.angle = angle;
   this.startingAngle = angle;
   this.yearLength = yearLength;
-  this.scale = scale;
+  this.scaleX = scale;
+  this.scaleY = scale;
   this.x = 0;
   this.y = 0;
   this.orbitTrail = 0;
@@ -25,17 +26,15 @@ function Planet(name, img, orbitRadius, angle, yearLength, scale) {
     } else {
       this.drawOrbit();
     }
-        this.x = (CANVAS_SIZE / 2) + (this.orbitRadius * Math.cos(this.angle * Math.PI / 180));
+    if (this.name == "Saturn") {
+      this.scaleY = this.scaleX*2.5;
+    }
+    this.x = (CANVAS_SIZE / 2) + (this.orbitRadius * Math.cos(this.angle * Math.PI / 180));
     this.y = (CANVAS_SIZE / 2) + (this.orbitRadius * Math.sin(this.angle * Math.PI / 180));
 //    ctx.drawImage(this.img, (this.x - (this.radius*4)), this.y - this.radius/scale, this.img.width/scale, this.img.width/scale);
     //ctx.drawImage(this.img, this.x - this.radius,40,this.img.width/scale, this.img.width/scale); for a head on view
-    ctx.drawImage(this.img, (this.x - this.radius), (this.y - this.radius), this.img.width/scale, this.img.width/scale);
-if (this.name === "Jupiter") {
-      console.log("40/2: " + (this.x - 40/2));
-      console.log("Img: " + (this.x - this.img.width/4));
-      console.log("X: " + this.x);
-      console.log("Img width: " + this.img.width);
-    }
+    var offset = this.img.width/2; 
+    ctx.drawImage(this.img, (this.x - offset/this.scaleX), (this.y - offset/this.scaleY), this.img.width/this.scaleX, this.img.width/this.scaleY);
 
     var position = this.x - this.radius/scale;
     var xx = this.x - this.radius*4;
@@ -86,7 +85,7 @@ var c;
 function init() {
   var canvas = document.getElementById('tutorial');
   ctx = canvas.getContext('2d');
-  //c = drawBackground();
+  c = drawBackground();
   var mercury = new Planet("Mercury", imgMercury, 8, 0, 0.24, 2);
   planets.push(mercury);
   var venus = new Planet("Venus", imgVenus, 11, 10, 0.62, 1);
@@ -109,7 +108,7 @@ function init() {
 
 function draw() {
   ctx.clearRect(0,0,CANVAS_SIZE, CANVAS_SIZE);
-  //ctx.drawImage(c, 0, 0);
+  ctx.drawImage(c, 0, 0);
   //ctx.strokeStyle = 'rgba(0,152,255,0.4)';
   ctx.strokeStyle = 'rgba(255,255,255,0.9)';
   planets.forEach( function (arrayItem) {
@@ -124,7 +123,6 @@ function createOrbit(ctx, centerX, centerY, radius, startAngle, endAngle) {
   return orbit;
 }
 
-/**
 function drawBackground() {
   // TODO: have variable opacity. Expand the star field to fill the browser window, but let
   // both opacity and concentration decrease as distance from center of canvas increases
@@ -144,4 +142,3 @@ function drawBackground() {
   }
   return starField;
 }
-*/
