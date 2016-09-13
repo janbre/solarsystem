@@ -3,7 +3,7 @@ const x = CANVAS_SIZE / 2;
 const y = CANVAS_SIZE / 2;
 var ctx;
 var SPEED = 8;
-var animateOrbit = false;
+var animateOrbit = true;
 
 function Planet(name, img, orbitRadius, angle, yearLength, scale) {
   this.name = name;
@@ -51,11 +51,11 @@ function Planet(name, img, orbitRadius, angle, yearLength, scale) {
     var diff = this.angle - this.orbitTrail;
     if (diff < 0) {
     //if ((this.angle - this.startingAngle) > 120) {
-      var orbit = createOrbit(ctx, x, y, this.orbitRadius, (360 + diff)*Math.PI/180, this.angle*Math.PI/180);
+      var orbit = createOrbit(OC, x, y, this.orbitRadius, (360 + diff)*Math.PI/180, this.angle*Math.PI/180);
     } else {
-      var orbit = createOrbit(ctx, x, y, this.orbitRadius, diff*Math.PI/180, this.angle*Math.PI/180);
+      var orbit = createOrbit(OC, x, y, this.orbitRadius, diff*Math.PI/180, this.angle*Math.PI/180);
     }
-    ctx.stroke(orbit);
+    OC.stroke(orbit);
   }
 
   this.drawOrbit = function() {
@@ -81,6 +81,8 @@ var imgNeptune = "img/neptune.png";
 
 var background = new Image();
 var c;
+var ORBITS;
+var OC;
 
 function init() {
   var canvas = document.getElementById('tutorial');
@@ -103,12 +105,19 @@ function init() {
   var neptune = new Planet("Neptune", imgNeptune, 500, 0, 164.8, 3);
   planets.push(neptune);
   background.src = 'img/stars.jpg';
+  ORBITS = document.createElement("canvas");
+  ORBITS.width = CANVAS_SIZE;
+  ORBITS.height = CANVAS_SIZE;
+  OC = ORBITS.getContext("2d");
+  OC.fillStyle = "rgba(250,250,250,0.2)";
+  OC.strokeStyle = "rgba(250,250,250,0.2)";
   window.requestAnimationFrame(draw);
 }
 
 function draw() {
   ctx.clearRect(0,0,CANVAS_SIZE, CANVAS_SIZE);
   ctx.drawImage(c, 0, 0);
+  ctx.drawImage(ORBITS, 0, 0);
   //ctx.strokeStyle = 'rgba(0,152,255,0.4)';
   ctx.strokeStyle = 'rgba(255,255,255,0.9)';
   planets.forEach( function (arrayItem) {
